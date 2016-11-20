@@ -126,7 +126,7 @@ public class PLSQL2XMLConverter
      */
     protected void convert()
     {
-        // Declare variables to store the parser, the parse tree, and the query results.
+        // Declare variables to store the parser, the parse tree, the connection, and the query results.
         PLSQLParser parser = null;
         ParseTree tree = null;
         Connection connection = null;
@@ -149,10 +149,8 @@ public class PLSQL2XMLConverter
                 {
                     if ( results != null )
                     {
-                        ResultSetMetaData rsmd = results.getMetaData();
-
-                        // TODO: Convert the relational database output of the unmodified Oracle PL/SQL selection statement into XML.
-                        PLSQL2XMLConverter.printSQLResults(results, rsmd);
+                        // Construct the output XML.
+                        this.setOutput(this.getXMLResults(results, results.getMetaData()));
                     }
                 }
             }
@@ -165,10 +163,12 @@ public class PLSQL2XMLConverter
             {
                 try
                 {
+                    // Try to close the connection.
                     connection.close();
                 }
                 catch ( SQLException sqle )
                 {
+                    // Failed to close the connection.
                     sqle.printStackTrace();
                 }
 
@@ -202,6 +202,36 @@ public class PLSQL2XMLConverter
     protected final StringBuffer getOutput()
     {
         return this.output;
+    }
+
+    /**
+     * Construct an output {@link java.lang.StringBuffer} containing the XML.
+     * 
+     * @param results
+     *            the {@link java.sql.ResultSet} populated with the output of a SQL query.
+     * @param rsmd
+     *            the {@link java.sql.ResultSetMetaData} that corresponds to the results.
+     * @return a {@link java.lang.StringBuffer} containing the output XML.
+     * @throws SQLException
+     *             if a database access error occurs.
+     * @since 1.0
+     */
+    protected StringBuffer getXMLResults(final ResultSet results, final ResultSetMetaData rsmd) throws SQLException
+    {
+        // TODO: Convert the relational database output of the unmodified Oracle PL/SQL selection statement into XML.
+        StringBuffer output = new StringBuffer();
+
+        // Loop through rows.
+        while ( results.next() )
+        {
+            // Loop through columns.
+            for ( int i = 0; i < rsmd.getColumnCount(); i++ )
+            {
+                //
+            }
+        }
+
+        return output;
     }
 
     /**
