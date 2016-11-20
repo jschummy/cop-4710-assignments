@@ -2,7 +2,7 @@
  * @author Matthew Boyette (N00868808@ospreys.unf.edu)
  * @version 1.0
  * 
- * This helper class contains useful utility methods.
+ *          This helper class contains useful utility methods.
  */
 
 package dml.team5;
@@ -17,21 +17,22 @@ public final class Utility
     /**
      * Executes a SQL statement on the Oracle database server and returns the corresponding {@link java.sql.ResultSet}.
      * 
-     * @param input a {@link java.lang.String} containing the SQL query.
+     * @param connection
+     *            a {@link java.sql.Connection} to the database server.
+     * @param input
+     *            a {@link java.lang.String} containing the SQL query.
      * @return the {@link java.sql.ResultSet}.
-     * @throws SQLException if a database access error occurs or the given SQL statement produces anything other than a single {@link java.sql.ResultSet}.
+     * @throws SQLException
+     *             if a database access error occurs, or the given SQL statement produces anything other than a single {@link java.sql.ResultSet}.
      * @since 1.0
      */
-    public static final ResultSet executeSQLStatement(final String input) throws SQLException
+    public static final ResultSet executeSQLStatement(final Connection connection, final String input) throws SQLException
     {
-        Connection connection = Utility.getConnection();
         ResultSet results = null;
 
         if ( connection != null )
         {
             results = connection.createStatement().executeQuery(input);
-            connection.close();
-            connection = null;
         }
 
         return results;
